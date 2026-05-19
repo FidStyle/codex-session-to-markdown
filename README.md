@@ -1,15 +1,32 @@
-# codex-prompts
+# codex-session-to-markdown
 
-Extract user prompts from Codex session JSONL files.
+Convert Codex session JSONL files into a readable prompt transcript.
 
-## Usage
+## Install
+
+Install from this repository:
+
+```bash
+cargo install --path .
+```
+
+This installs the `codex-session-to-markdown` command into Cargo's bin directory, usually `~/.cargo/bin`. Make sure that directory is on your `PATH`.
+
+You can also build a release binary manually:
 
 ```bash
 cargo build --release
-./target/release/codex-prompts ~/.codex/sessions/2026/04/23/rollout-example.jsonl
-./target/release/codex-prompts --with-context ~/.codex/sessions/2026/04/23/rollout-example.jsonl
+sudo install -m 755 target/release/codex-session-to-markdown /usr/local/bin/
 ```
 
-Default output is only the user prompt text, separated by blank lines. `--with-context` adds the nearest previous assistant `response_item` message before each prompt.
+## Usage
 
-The parser uses `response_item.payload.type == "message"` with `role == "user"` or `role == "assistant"`. It does not use `event_msg.payload.last_agent_message`.
+Pass either a full Codex session `.jsonl` path or the complete session UUID from the end of the rollout file name:
+
+```bash
+codex-session-to-markdown 019dfa57-dbd2-7f61-84c4-0c468f27dd1a
+codex-session-to-markdown ~/.codex/sessions/2026/04/23/rollout-example.jsonl
+codex-session-to-markdown --with-context 019dfa57-dbd2-7f61-84c4-0c468f27dd1a
+```
+
+By default it outputs user prompts separated by blank lines. `--with-context` includes the nearest previous assistant reply. `--no-dedupe` keeps duplicate or superseded prompts.

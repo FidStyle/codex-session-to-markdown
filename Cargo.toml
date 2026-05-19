@@ -1,8 +1,8 @@
 [package]
-name = "codex-prompts"
+name = "codex-session-to-markdown"
 version = "0.1.0"
 edition = "2021"
-description = "Extract user prompts from Codex session JSONL files."
+description = "Convert Codex session JSONL files to Markdown prompt transcripts."
 license = "MIT"
 
 [dependencies]
